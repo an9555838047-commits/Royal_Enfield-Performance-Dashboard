@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Royal Enfield Dashboard</title>
+  
+  <!-- Modern Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(-45deg, #ffd1dc, #fbc2eb, #a6c1ee, #c2e9fb);
+      background-size: 300% 300%;
+      animation: gradientBG 12s ease infinite;
+      color: #333;
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 15px 40px;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      animation: floatBadge 3.5s ease-in-out infinite;
+    }
+
+    .bike-logo {
+      width: 75px;
+      height: 55px;
+      filter: drop-shadow(0 4px 8px rgba(217, 44, 39, 0.3));
+    }
+
+    .wheel {
+      transform-origin: center;
+      animation: spinWheel 2s linear infinite;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #d92c27;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      font-weight: 400;
+      color: #4a5568;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes floatBadge {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes spinWheel {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      padding: 0 40px;
+      max-width: 1350px;
+      margin: auto;
+      justify-content: center;
+    }
+
+    .chart-container {
+      background: rgba(255, 255, 255, 0.88);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      width: calc(50% - 13px);
+      min-width: 340px;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chart-container:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .chart-container.full-width {
+      width: 100%;
+    }
+
+    /* Keep Line chart at a proper, reduced size */
+    .line-chart-wrapper {
+      position: relative;
+      height: 350px; 
+      width: 100%;
+    }
+
+    @media (max-width: 820px) {
+      .chart-container {
+        width: 100%;
+      }
+      header {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-container">
+      <svg class="bike-logo" viewBox="0 0 100 65" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 25 45 L 42 45 L 56 26 L 38 26 Z" fill="#d92c27" />
+        <ellipse cx="48" cy="23" rx="10" ry="5.5" fill="#1a1a1a" />
+        <circle cx="70" cy="22" r="3" fill="#ffb703" />
+        <path d="M 68 20 L 73 38 L 73 45" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path d="M 64 16 L 72 20" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" />
+        <path d="M 32 23 C 36 21, 40 24, 43 25" stroke="#1a1a1a" stroke-width="3.5" stroke-linecap="round" fill="none" />
+        <path d="M 42 45 L 30 24" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" />
+        <path d="M 45 46 L 20 46" stroke="#silver" stroke-width="3.5" stroke-linecap="round" />
+
+        <g class="wheel" style="transform-origin: 73px 45px;">
+          <circle cx="73" cy="45" r="14" stroke="#1a1a1a" stroke-width="4.5" fill="none" />
+          <circle cx="73" cy="45" r="4" fill="#d92c27" />
+          <line x1="73" y1="31" x2="73" y2="59" stroke="#777" stroke-width="1.5" />
+          <line x1="59" y1="45" x2="87" y2="45" stroke="#777" stroke-width="1.5" />
+        </g>
+
+        <g class="wheel" style="transform-origin: 25px 45px;">
+          <circle cx="25" cy="45" r="14" stroke="#1a1a1a" stroke-width="4.5" fill="none" />
+          <circle cx="25" cy="45" r="4" fill="#d92c27" />
+          <line x1="25" y1="31" x2="25" y2="59" stroke="#777" stroke-width="1.5" />
+          <line x1="11" y1="45" x2="39" y2="45" stroke="#777" stroke-width="1.5" />
+        </g>
+      </svg>
+
+      <div class="brand-text">
+        <span class="brand-title">Royal Enfield</span>
+        <span class="brand-subtitle">Sales & Performance Dashboard</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard Container -->
+  <div class="dashboard">
+    <!-- Line Chart (Proper Size & Visible Axes) -->
+    <div class="chart-container full-width">
+      <div class="line-chart-wrapper">
+        <canvas id="lineChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="chart-container">
+      <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- Doughnut / Pie Chart -->
+    <div class="chart-container">
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Global Chart Defaults
+    Chart.defaults.font.family = "'Poppins', sans-serif";
+    Chart.defaults.color = '#555';
+    Chart.defaults.plugins.legend.position = 'bottom';
+    Chart.defaults.plugins.legend.labels.padding = 18;
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+
+    // 1. Line Chart
+    const lineCtx = document.getElementById("lineChart");
+    new Chart(lineCtx, {
+      type: "line",
+      data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [{
+          label: "Revenue (₹)",
+          data: [1850000, 2100000, 1950000, 2400000, 2600000, 2300000, 2800000, 3000000, 2700000, 3200000, 3500000, 3800000],
+          borderColor: "#d92c27",
+          backgroundColor: "rgba(217, 44, 39, 0.12)",
+          borderWidth: 3.5,
+          tension: 0.4,
+          fill: true,
+          pointBackgroundColor: "#ffffff",
+          pointBorderColor: "#d92c27",
+          pointBorderWidth: 2,
+          pointRadius: 4.5,
+          pointHoverRadius: 7
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, /* This stops the chart from growing too tall */
+        plugins: {
+          title: {
+            display: true,
+            text: "Monthly Revenue Trend",
+            font: { size: 16, weight: '600' },
+            padding: { bottom: 15 }
+          }
+        },
+        scales: {
+          y: { 
+            beginAtZero: true,
+            border: {
+              display: true,
+              color: '#333', // Solid Y axis line
+              width: 2
+            },
+            grid: { 
+              color: "rgba(0,0,0,0.08)",
+              drawOnChartArea: true 
+            }
+          },
+          x: {
+            border: {
+              display: true,
+              color: '#333', // Solid X axis line
+              width: 2
+            },
+            grid: { 
+              display: true,
+              color: "rgba(0,0,0,0.05)" 
+            }
+          }
+        }
+      }
+    });
+
+    // 2. Bar Chart
+    const barCtx = document.getElementById("barChart");
+    new Chart(barCtx, {
+      type: "bar",
+      data: {
+        labels: ["Classic 350", "Hunter 350", "Bullet 350", "Meteor 350", "Himalayan 450", "Interceptor 650", "Continental GT"],
+        datasets: [{
+          label: "Bikes Sold",
+          data: [28, 18, 16, 12, 10, 9, 7],
+          backgroundColor: [
+            "#1f2937", "#d92c27", "#f59e0b", "#8b5cf6", "#06b6d4", "#10b981", "#3b82f6"
+          ],
+          borderRadius: 8,
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "Sales by Bike Model",
+            font: { size: 16, weight: '600' },
+            padding: { bottom: 15 }
+          }
+        },
+        scales: {
+          y: { 
+            beginAtZero: true,
+            border: { display: true, color: '#333', width: 2 },
+            grid: { color: "rgba(0,0,0,0.08)" }
+          },
+          x: {
+            border: { display: true, color: '#333', width: 2 },
+            grid: { display: false }
+          }
+        }
+      }
+    });
+
+    // 3. Payment Mode Doughnut Chart
+    const pieCtx = document.getElementById("pieChart");
+    new Chart(pieCtx, {
+      type: "doughnut",
+      data: {
+        labels: ["Finance", "Cash", "UPI", "Credit Card", "Debit Card"],
+        datasets: [{
+          label: "Payment Mode (%)",
+          data: [35, 20, 25, 12, 8],
+          backgroundColor: [
+            "#ff758c", "#84fab0", "#a1c4fd", "#fed6e3", "#fccb90"
+          ],
+          hoverOffset: 8,
+          borderWidth: 2,
+          borderColor: "#fff"
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: '62%',
+        plugins: {
+          title: {
+            display: true,
+            text: "Payment Mode Distribution",
+            font: { size: 16, weight: '600' },
+            padding: { bottom: 15 }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
